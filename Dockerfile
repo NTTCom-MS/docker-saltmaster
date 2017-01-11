@@ -4,6 +4,10 @@ MAINTAINER Jordi Prats
 RUN mkdir -p /usr/local/src
 RUN yum install git -y
 
+# puppet
+RUN rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
+RUN yum install puppet-agent -y
+
 # puppet-masterless
 RUN mkdir -p /usr/local/src/puppet-masterless
 RUN git clone https://github.com/jordiprats/puppet-masterless.git /usr/local/src/puppet-masterless
