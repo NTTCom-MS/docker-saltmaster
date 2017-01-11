@@ -5,9 +5,6 @@ RUN yum install git which wget -y
 
 RUN mkdir -p /usr/local/src
 
-# startup script
-COPY runme.sh /usr/local/src/
-
 # puppet
 RUN rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
 RUN yum install puppet-agent -y
@@ -21,10 +18,10 @@ RUN mkdir -p /usr/local/src/localpuppetmaster/master
 COPY saltmaster.pp /usr/local/src/localpuppetmaster/
 
 # eyp-saltstack
-RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master eyp-saltstack /usr/local/src/localpuppetmaster/saltmaster.pp
+RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master eyp-saltstack
 
-# eyp-pam
-RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master eyp-pam /usr/local/src/localpuppetmaster/saltmaster.pp
+# eyp-pam & puppet apply
+RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master -s /usr/local/src/localpuppetmaster/saltmaster.pp eyp-pam
 
 # When starting up, salt minions connect _back_ to a master defined in the minion config file.
 # The connect to two ports on the master:
@@ -34,3 +31,5 @@ RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/loca
 #     results back to the master.
 
 EXPOSE 4505 4506
+
+CMD /usr/bin/salt-master
