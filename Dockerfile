@@ -2,7 +2,7 @@ FROM centos:centos7
 MAINTAINER Jordi Prats
 
 RUN mkdir -p /usr/local/src
-RUN yum install git which wget-y
+RUN yum install git which wget -y
 
 # puppet
 RUN rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
