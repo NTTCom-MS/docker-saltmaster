@@ -1,0 +1,2 @@
+
+class { 'saltstack::master': }
