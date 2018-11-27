@@ -1,4 +1,3 @@
-
 class { 'saltstack::master':
   manage_service => false,
 }
