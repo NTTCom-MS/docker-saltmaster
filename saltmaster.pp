@@ -26,7 +26,7 @@ saltstack::master::acl { 'saltuser2':
 }
 
 class { 'saltstack::minion':
-  master         => '127.0.0.1'
+  master         => '127.0.0.1',
   manage_service => false,
 }
 

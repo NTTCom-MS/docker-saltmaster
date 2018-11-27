@@ -1,7 +1,7 @@
 FROM centos:centos7
 MAINTAINER Jordi Prats
 
-RUN yum install git which wget -y
+RUN yum install git which wget supervisor -y
 
 RUN mkdir -p /usr/local/src
 
