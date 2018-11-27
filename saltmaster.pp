@@ -1,3 +1,5 @@
+class { 'saltstack::cloud': }
+
 class { 'saltstack::master':
   manage_service => false,
 }
@@ -10,11 +12,6 @@ saltstack::master::pillar { 'base':
   files => [ '/srv/salt-data/pillar' ],
 }
 
-class { 'saltstack::cloud': }
-
-class { 'saltstack::api':
-  manage_service => false,
-}
 
 saltstack::master::key { $::fqdn:
   status => 'accepted'
@@ -26,6 +23,17 @@ saltstack::master::acl { 'saltuser':
 
 saltstack::master::acl { 'saltuser2':
   match => [ '.*', '@runner' ],
+}
+
+class { 'saltstack::minion':
+  master         => '127.0.0.1'
+  manage_service => false,
+}
+
+->
+
+class { 'saltstack::api':
+  manage_service => false,
 }
 
 class { 'pam': }
