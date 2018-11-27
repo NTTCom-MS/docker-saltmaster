@@ -30,6 +30,9 @@ RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/loca
 #   TCP: 4506 This is the connection to the master ReqServer. It is on this port that the minion sends job
 #     results back to the master.
 
+COPY runme.sh /usr/local/bin/runme.sh
+RUN chmod +x /usr/local/bin/runme.sh
+
 EXPOSE 4505 4506
 
 CMD /usr/bin/salt-master
