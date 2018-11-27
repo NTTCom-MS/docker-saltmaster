@@ -16,8 +16,6 @@ class { 'saltstack::api':
   manage_service => false,
 }
 
-class { 'saltstack::syndic': }
-
 saltstack::master::key { $::fqdn:
   status => 'accepted'
 }
