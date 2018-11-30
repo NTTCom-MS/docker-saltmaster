@@ -1,13 +1,52 @@
-FROM centos:centos7
+FROM ubuntu:18.04
 MAINTAINER Jordi Prats
 
-RUN yum install git which wget supervisor -y
+# TODO
+# http://label-schema.org/rc1/#build-time-labels
+LABEL org.label-schema.vendor="" \
+      org.label-schema.url="https://github.com/NTTCom-MS" \
+      org.label-schema.name="puppetdb" \
+      org.label-schema.license="" \
+      org.label-schema.version="5.5.6"\
+      org.label-schema.vcs-url="https://github.com/NTTCom-MS/docker-puppetmaster5" \
+      org.label-schema.vcs-ref="" \
+      org.label-schema.build-date="2018-10-05T16:00:00.52Z" \
+      org.label-schema.schema-version="1.0"
+
+ENV HOME /root
+ENV PATH /usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/opt/puppet-masterless:/root/bin
+
+#
+# timezone and locale
+#
+RUN echo "Europe/Andorra" > /etc/timezone && \
+	dpkg-reconfigure -f noninteractive tzdata
+
+RUN export LANGUAGE=en_US.UTF-8 && \
+	export LANG=en_US.UTF-8 && \
+	export LC_ALL=en_US.UTF-8 && \
+	locale-gen en_US.UTF-8 && \
+	DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
+
+#
+# basics
+#
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install gcc -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install make -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install wget -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install strace -y
+
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install git -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install supervisor -y
 
 RUN mkdir -p /usr/local/src
 
 # puppet
-RUN rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
-RUN yum install puppet-agent -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install puppet -y
 
 # puppet-masterless
 RUN mkdir -p /usr/local/src/puppet-masterless
