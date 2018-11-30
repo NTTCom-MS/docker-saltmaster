@@ -58,6 +58,8 @@ RUN yum install supervisor -y
 COPY supervisor/saltmaster.ini /etc/supervisord.d/
 COPY supervisor/saltapi.ini /etc/supervisord.d/
 
+RUN unlink /var/run/supervisor/supervisor.sock
+
 EXPOSE 4505 4506
 
 CMD /usr/bin/supervisord -c /etc/supervisord.conf
