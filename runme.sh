@@ -3,7 +3,7 @@
 #
 # prepare environment
 #
-if [ ! -z "${INIT_SALT_REPOS}"];
+if [ ! -z "${INIT_SALT_REPOS}" ];
 then
   cd /srv/salt-data
   for gitrepo in ${INIT_SALT_REPOS};
