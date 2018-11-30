@@ -1,6 +1,20 @@
 FROM centos:centos7
 MAINTAINER Jordi Prats
 
+# TODO
+# http://label-schema.org/rc1/#build-time-labels
+LABEL org.label-schema.vendor="" \
+      org.label-schema.url="https://github.com/NTTCom-MS" \
+      org.label-schema.name="saltmaster" \
+      org.label-schema.license="" \
+      org.label-schema.version="0.1.10"\
+      org.label-schema.vcs-url="https://github.com/NTTCom-MS/docker-saltmaster" \
+      org.label-schema.vcs-ref="" \
+      org.label-schema.build-date="2018-11-30T10:00:00.52Z" \
+org.label-schema.schema-version="1.0"
+
+ENV HOME /root
+
 # update current base
 
 RUN yum clean all
@@ -39,9 +53,9 @@ RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/loca
 
 # supervisor conf
 
-COPY supervisor/saltmaster /etc/supervisord.d/
-COPY supervisor/saltapi /etc/supervisord.d/
+COPY supervisor/saltmaster.ini /etc/supervisord.d/
+COPY supervisor/saltapi.ini /etc/supervisord.d/
 
 EXPOSE 4505 4506
 
-CMD /usr/bin/salt-master
+CMD /usr/bin/supervisord -c /etc/supervisord.conf
