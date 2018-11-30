@@ -60,6 +60,6 @@ COPY supervisor/saltapi.ini /etc/supervisord.d/
 
 RUN bash -c 'if [ -s /var/run/supervisor/supervisor.sock ]; then unlink /var/run/supervisor/supervisor.sock; fi'
 
-EXPOSE 4505 4506
+EXPOSE 4505 4506 8000
 
 CMD /usr/bin/supervisord -c /etc/supervisord.conf -n
