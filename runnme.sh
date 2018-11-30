@@ -14,6 +14,6 @@ then
 fi
 
 #
-# launch saltmaster
+# launch saltmaster/saltapi
 #
 exec /usr/bin/supervisord -c /etc/supervisord.conf -n
