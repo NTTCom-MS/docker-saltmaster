@@ -58,7 +58,7 @@ RUN yum install supervisor -y
 COPY supervisor/saltmaster.ini /etc/supervisord.d/
 COPY supervisor/saltapi.ini /etc/supervisord.d/
 
-RUN unlink /var/run/supervisor/supervisor.sock
+RUN bash -c 'if [ -s /var/run/supervisor/supervisor.sock ]; then unlink /var/run/supervisor/supervisor.sock; fi'
 
 EXPOSE 4505 4506
 
