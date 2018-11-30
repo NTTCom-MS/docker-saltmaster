@@ -1,6 +1,8 @@
 FROM centos:centos7
 MAINTAINER Jordi Prats
 
+ENV INIT_SALT_REPOS=""
+
 # TODO
 # http://label-schema.org/rc1/#build-time-labels
 LABEL org.label-schema.vendor="" \
@@ -60,6 +62,16 @@ COPY supervisor/saltapi.ini /etc/supervisord.d/
 
 RUN bash -c 'if [ -s /var/run/supervisor/supervisor.sock ]; then unlink /var/run/supervisor/supervisor.sock; fi'
 
+COPY runme.sh /usr/bin/runme.sh
+
 EXPOSE 4505 4506 8000
 
-CMD /usr/bin/supervisord -c /etc/supervisord.conf -n
+# - create volumes for:
+#  * keys and configuration -> /etc/salt
+#  * state files -> /srv/salt-data
+#  * logs -> /var/log
+
+RUN mkdir -p /srv/salt-data
+VOLUME [ "/etc/salt", "/srv/salt-data", "/var/log" ]
+
+CMD /bin/bash /usr/bin/runme.sh
