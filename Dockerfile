@@ -1,7 +1,7 @@
 FROM centos:centos7
 MAINTAINER Jordi Prats
 
-RUN yum install git which wget supervisor -y
+RUN yum install git which wget supervisor net-tools -y
 
 RUN mkdir -p /usr/local/src
 
@@ -30,8 +30,8 @@ RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/loca
 #   TCP: 4506 This is the connection to the master ReqServer. It is on this port that the minion sends job
 #     results back to the master.
 
-COPY runme.sh /usr/local/bin/runme.sh
-RUN chmod +x /usr/local/bin/runme.sh
+COPY supervisor/saltmaster /etc/supervisord.d/
+COPY supervisor/saltapi /etc/supervisord.d/
 
 EXPOSE 4505 4506
 

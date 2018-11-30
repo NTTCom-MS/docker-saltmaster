@@ -1,0 +1,5 @@
+[program:saltmaster]
+
+command=/usr/bin/salt-master
+autostart=true
+autorestart=true
