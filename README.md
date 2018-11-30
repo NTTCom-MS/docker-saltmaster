@@ -10,6 +10,12 @@ cd docker-saltmaster
 docker build -t eyp/saltmaster .
 ```
 
+## configuration
+
+### envs
+
+* **INIT_SALT_REPOS**: space-separated list of sls repos
+
 ## run
 
 ### volume holder
