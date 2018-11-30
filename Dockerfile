@@ -62,4 +62,4 @@ RUN bash -c 'if [ -s /var/run/supervisor/supervisor.sock ]; then unlink /var/run
 
 EXPOSE 4505 4506
 
-CMD /usr/bin/supervisord -c /etc/supervisord.conf
+CMD /usr/bin/supervisord -c /etc/supervisord.conf -n
