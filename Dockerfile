@@ -22,7 +22,7 @@ RUN yum update -y
 
 # basics
 
-RUN yum install git which wget supervisor net-tools -y
+RUN yum install git which wget net-tools epel-release -y
 
 RUN mkdir -p /usr/local/src
 
@@ -52,6 +52,8 @@ RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/loca
 #     results back to the master.
 
 # supervisor conf
+
+RUN yum install supervisor -y
 
 COPY supervisor/saltmaster.ini /etc/supervisord.d/
 COPY supervisor/saltapi.ini /etc/supervisord.d/
