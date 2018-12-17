@@ -17,7 +17,7 @@ saltstack::master::pillar { 'base':
 }
 
 saltstack::master::key { $::fqdn:
-  status => 'accepted'
+  status => 'deleted'
 }
 
 saltstack::master::acl { 'saltuser':
