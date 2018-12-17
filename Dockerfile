@@ -58,8 +58,10 @@ RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/loca
 
 RUN yum install supervisor -y
 
-COPY supervisor/saltmaster.ini /etc/supervisord.d/
-COPY supervisor/saltapi.ini /etc/supervisord.d/
+COPY supervisor/salt-master.ini /etc/supervisord.d/
+COPY supervisor/salt-api.ini /etc/supervisord.d/
+COPY supervisor/crond.ini /etc/supervisord.d/
+COPY supervisor/puppet-agent.ini /etc/supervisord.d/
 
 RUN bash -c 'if [ -s /var/run/supervisor/supervisor.sock ]; then unlink /var/run/supervisor/supervisor.sock; fi'
 
