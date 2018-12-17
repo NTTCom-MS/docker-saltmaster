@@ -9,7 +9,7 @@ LABEL org.label-schema.vendor="" \
       org.label-schema.url="https://github.com/NTTCom-MS" \
       org.label-schema.name="saltmaster" \
       org.label-schema.license="" \
-      org.label-schema.version="0.1.10"\
+      org.label-schema.version="0.1.13"\
       org.label-schema.vcs-url="https://github.com/NTTCom-MS/docker-saltmaster" \
       org.label-schema.vcs-ref="" \
       org.label-schema.build-date="2018-11-30T10:00:00.52Z" \
@@ -24,7 +24,7 @@ RUN yum update -y
 
 # basics
 
-RUN yum install git which wget net-tools epel-release -y
+RUN yum install git which wget net-tools epel-release cronie -y
 
 RUN mkdir -p /usr/local/src
 
@@ -40,11 +40,12 @@ RUN mkdir -p /usr/local/src/localpuppetmaster/master
 
 COPY saltmaster.pp /usr/local/src/localpuppetmaster/
 
-# eyp-saltstack
+# eyp-saltstack && eyp-pam
 RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master eyp-saltstack
+RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master eyp-pam
 
-# eyp-pam & puppet apply
-RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master -s /usr/local/src/localpuppetmaster/saltmaster.pp eyp-pam
+# puppet apply - installation
+RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master -s /usr/local/src/localpuppetmaster/saltmaster.pp
 
 # When starting up, salt minions connect _back_ to a master defined in the minion config file.
 # The connect to two ports on the master:
@@ -57,8 +58,13 @@ RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/loca
 
 RUN yum install supervisor -y
 
-COPY supervisor/saltmaster.ini /etc/supervisord.d/
-COPY supervisor/saltapi.ini /etc/supervisord.d/
+COPY supervisor/salt-master.ini /etc/supervisord.d/
+COPY supervisor/salt-api.ini /etc/supervisord.d/
+COPY supervisor/crond.ini /etc/supervisord.d/
+COPY supervisor/puppet-agent.ini /etc/supervisord.d/
+COPY supervisor/healthcheckd.ini /etc/supervisord.d/
+
+COPY healthcheckd/healthcheckd.py /usr/local/bin/healthcheckd.py
 
 RUN bash -c 'if [ -s /var/run/supervisor/supervisor.sock ]; then unlink /var/run/supervisor/supervisor.sock; fi'
 

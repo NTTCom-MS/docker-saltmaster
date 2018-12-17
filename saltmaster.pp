@@ -1,5 +1,11 @@
+class { 'saltstack::repo':
+  version       => '2018.3',
+  version_minor => '2',
+}
+
 class { 'saltstack::master':
   manage_service => false,
+  require        => Class['saltstack::repo'],
 }
 
 saltstack::master::fileroot { 'base':
@@ -11,7 +17,7 @@ saltstack::master::pillar { 'base':
 }
 
 saltstack::master::key { $::fqdn:
-  status => 'accepted'
+  status => 'deleted'
 }
 
 saltstack::master::acl { 'saltuser':
@@ -22,17 +28,21 @@ saltstack::master::acl { 'saltuser2':
   match => [ '.*', '@runner' ],
 }
 
-class { 'saltstack::cloud': }
+class { 'saltstack::cloud':
+  require => Class['saltstack::repo'],
+}
 
 class { 'saltstack::minion':
   master         => '127.0.0.1',
   manage_service => false,
+  require        => Class['saltstack::repo'],
 }
 
 ->
 
 class { 'saltstack::api':
   manage_service => false,
+  require        => Class['saltstack::repo'],
 }
 
 class { 'pam': }
