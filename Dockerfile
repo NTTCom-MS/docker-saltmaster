@@ -62,6 +62,9 @@ COPY supervisor/salt-master.ini /etc/supervisord.d/
 COPY supervisor/salt-api.ini /etc/supervisord.d/
 COPY supervisor/crond.ini /etc/supervisord.d/
 COPY supervisor/puppet-agent.ini /etc/supervisord.d/
+COPY supervisor/healthcheckd.ini /etc/supervisord.d/
+
+COPY healthcheckd/healthcheckd.py /usr/local/bin/healthcheckd.py
 
 RUN bash -c 'if [ -s /var/run/supervisor/supervisor.sock ]; then unlink /var/run/supervisor/supervisor.sock; fi'
 
