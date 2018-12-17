@@ -24,7 +24,7 @@ RUN yum update -y
 
 # basics
 
-RUN yum install git which wget net-tools epel-release -y
+RUN yum install git which wget net-tools epel-release cronie -y
 
 RUN mkdir -p /usr/local/src
 
@@ -40,11 +40,12 @@ RUN mkdir -p /usr/local/src/localpuppetmaster/master
 
 COPY saltmaster.pp /usr/local/src/localpuppetmaster/
 
-# eyp-saltstack
+# eyp-saltstack && eyp-pam
 RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master eyp-saltstack
+RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master eyp-pam
 
-# eyp-pam & puppet apply
-RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master -s /usr/local/src/localpuppetmaster/saltmaster.pp eyp-pam
+# puppet apply - installation
+RUN /bin/bash /usr/local/src/puppet-masterless/localpuppetmaster.sh -d /usr/local/src/localpuppetmaster/master -s /usr/local/src/localpuppetmaster/saltmaster.pp
 
 # When starting up, salt minions connect _back_ to a master defined in the minion config file.
 # The connect to two ports on the master:
