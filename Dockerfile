@@ -29,7 +29,7 @@ RUN yum install git which wget net-tools epel-release cronie -y
 RUN mkdir -p /usr/local/src
 
 # puppet
-RUN rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
+RUN rpm -Uvh https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
 RUN yum install puppet-agent -y
 
 # puppet-masterless
